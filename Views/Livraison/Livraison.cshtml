@@ -1,0 +1,189 @@
+﻿@model IEnumerable<MyShop.Models.Carrier>
+
+@{
+    ViewBag.Title = "شركات التوصيل";
+    Layout = "_Layout";  // استخدم Layout العام لو عندك
+}
+
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0 20px 0;
+        }
+
+            .page-header h4 {
+                font-weight: 700;
+                color: #333;
+            }
+
+        .carrier-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .carrier-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            position: relative;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .carrier-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+            }
+
+            .carrier-card input[type=checkbox] {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                transform: scale(1.2);
+            }
+
+        .carrier-logo {
+            height: 50px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .carrier-name {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .status-btn {
+            font-size: 14px;
+            padding: 6px 0;
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .status-active {
+            background-color: #28a745 !important;
+            color: #fff !important;
+        }
+
+        .status-inactive {
+            background-color: #dc3545 !important;
+            color: #fff !important;
+        }
+
+        .pagination-box {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .square-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+            .square-btn:hover {
+                background-color: #e9ecef;
+            }
+
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid px-4">
+
+        <div class="page-header">
+            <h4><i class="bi bi-truck"></i> شركات التوصيل</h4>
+
+            <div>
+                <input type="checkbox" id="selectAll" class="form-check-input" />
+                <label for="selectAll" class="ms-2">تحديد الكل</label>
+            </div>
+        </div>
+
+        <div class="carrier-grid">
+            @foreach (var c in Model)
+            {
+                <div class="carrier-card" data-id="@c.Id">
+                    <input type="checkbox" class="form-check-input row-check" data-id="@c.Id" />
+
+                    <img src="@Url.Content(c.LogoUrl)" alt="@c.Name" class="carrier-logo" />
+
+                    <div class="carrier-name">@c.Name</div>
+
+                    <button class="btn status-btn @(c.IsActive ? "status-active" : "status-inactive") toggle-active"
+                            data-id="@c.Id">
+                        @(c.IsActive ? "مفعل" : "معطل")
+                    </button>
+                </div>
+            }
+        </div>
+
+        <div class="pagination-box">
+            <div class="square-btn"><i class="bi bi-chevron-double-right"></i></div>
+            <div class="square-btn"><i class="bi bi-chevron-right"></i></div>
+            <div class="square-btn"><i class="bi bi-chevron-left"></i></div>
+            <div class="square-btn"><i class="bi bi-chevron-double-left"></i></div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // تفعيل / تعطيل الشركة
+        $(document).on("click", ".toggle-active", function () {
+            var btn = $(this);
+            var id = btn.data("id");
+
+            $.post("@Url.Action("ToggleActive", "Livraison")", { id: id }, function (resp) {
+                if (resp.success) {
+                    if (resp.isActive) {
+                        btn.removeClass("status-inactive").addClass("status-active").text("مفعل");
+                    } else {
+                        btn.removeClass("status-active").addClass("status-inactive").text("معطل");
+                    }
+                }
+            });
+        });
+
+        // تحديد الكل
+        $("#selectAll").on("change", function () {
+            $(".row-check").prop("checked", $(this).prop("checked"));
+        });
+    </script>
+
+</body>
+</html>

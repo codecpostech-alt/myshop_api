@@ -1,0 +1,28 @@
+﻿@model MyShop.Models.Planning
+
+<h3>Ajouter Planning</h3>
+
+<form asp-action="Create" method="post">
+    <input type="hidden" asp-for="ChauffeurId" value="@ViewBag.ChauffeurId" />
+
+    <div class="mb-3">
+        <label class="form-label">Date</label>
+        <input asp-for="DatePlanning" class="form-control" type="date" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Camion</label>
+        <input asp-for="Camion" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">État</label>
+        <select asp-for="Etat" class="form-select">
+            <option value="Prévue">Prévue</option>
+            <option value="EnTournee">En tournée</option>
+            <option value="Terminee">Terminée</option>
+        </select>
+    </div>
+
+    <button class="btn btn-primary">Enregistrer</button>
+</form>

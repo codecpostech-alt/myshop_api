@@ -1,0 +1,82 @@
+﻿@model MyShop.Models.Employee
+
+@{
+    ViewBag.Title = ViewBag.Action;
+    Layout = "_Layout";
+}
+
+<div class="container mt-4" dir="ltr">
+    <!-- العنوان في اليسار -->
+    <div class="d-flex justify-content-start align-items-center mb-4">
+        <h2 class="mb-0">👨‍💼 @ViewBag.Action</h2>
+    </div>
+
+    <form asp-action="Save" method="post" class="text-start">
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="Nom" class="form-label fw-bold"></label>
+                <input asp-for="Nom" class="form-control text-start" />
+                <span asp-validation-for="Nom" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="Prenom" class="form-label fw-bold"></label>
+                <input asp-for="Prenom" class="form-control text-start" />
+                <span asp-validation-for="Prenom" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="Poste" class="form-label fw-bold"></label>
+                <input asp-for="Poste" class="form-control text-start" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="SalaireBase" class="form-label fw-bold"></label>
+                <input asp-for="SalaireBase" class="form-control text-start" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="DateNaissance" class="form-label fw-bold"></label>
+                <input asp-for="DateNaissance" class="form-control text-start" type="date" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="DateRecrutement" class="form-label fw-bold"></label>
+                <input asp-for="DateRecrutement" class="form-control text-start" type="date" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="Adresse" class="form-label fw-bold"></label>
+                <input asp-for="Adresse" class="form-control text-start" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="NSS" class="form-label fw-bold"></label>
+                <input asp-for="NSS" class="form-control text-start" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="Email" class="form-label fw-bold"></label>
+                <input asp-for="Email" class="form-control text-start" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="Telephone" class="form-label fw-bold"></label>
+                <input asp-for="Telephone" class="form-control text-start" />
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-start mt-4">
+            <button type="submit" class="btn btn-success me-2">💾 Enregistrer</button>
+            <a href="@Url.Action("Index", "Employees")" class="btn btn-secondary">↩️ Retour</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,238 @@
+﻿@model MyShop.Models.VenteViewModel
+
+@{
+    ViewBag.Title = "Vente POS";
+    Layout = "_Layout";
+}
+
+<div class="content-wrapper ltr">
+    <div class="page-header d-flex justify-content-between align-items-center mb-4">
+        <!-- Button retour à gauche -->
+        <a href="@Url.Action("Index", "Produits")" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Retour
+        </a>
+
+        <!-- Titre Vente POS à droite -->
+        <h3 class="page-title ms-auto">Vente POS</h3>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <!-- Section Produit + Quantité + Ajouter -->
+    <div class="row align-items-end mb-4">
+        <div class="col-md-6">
+            <label for="produitSelect" class="form-label">Produit</label>
+            <select id="produitSelect" class="form-select ltr-text">
+                <option value="">-- Sélectionner un produit --</option>
+                @foreach (var p in Model.ProduitsList)
+                {
+                    <option value="@p.Id" data-prix="@p.PrixVente" data-nom="@p.Nom" data-quantite="@p.Quantite">
+                        @p.Nom (@p.Quantite disponible)
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="quantiteInput" class="form-label">Quantité</label>
+            <input type="number" id="quantiteInput" class="form-control ltr-text" min="1" value="1" />
+        </div>
+        <div class="col-md-3 d-flex">
+            <button type="button" id="addProduitBtn" class="btn btn-primary ms-auto">
+                <i class="bi bi-plus-circle me-1"></i> Ajouter
+            </button>
+        </div>
+    </div>
+
+    <!-- Formulaire de vente -->
+    <form asp-action="Save" method="post" id="venteForm">
+        <table class="table table-striped table-bordered text-start" id="venteTable">
+            <thead class="table-dark">
+                <tr>
+                    <th>Produit</th>
+                    <th>Prix Unitaire (DA)</th>
+                    <th>Quantité</th>
+                    <th>Total (DA)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Les produits ajoutés apparaîtront ici via JS -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5">
+                        <div class="montant-total-box d-flex justify-content-end align-items-center">
+                            <span>Montant Total: </span>
+                            <span id="montantTotal" class="montant-value ms-2">0.00 DA</span>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <input type="hidden" asp-for="ClientNom" value="@Model.ClientNom" />
+        <input type="hidden" asp-for="DateVente" value="@Model.DateVente" />
+
+        <div class="d-flex justify-content-center mt-4">
+            <button type="submit" class="btn btn-success btn-lg me-3">
+                <i class="bi bi-check-circle me-1"></i> Enregistrer Vente
+            </button>
+            <a href="@Url.Action("Index", "Vente")" class="btn btn-outline-secondary btn-lg">
+                <i class="bi bi-x-circle me-1"></i> Annuler
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #f0f4f8, #d9e8fb);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .content-wrapper {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 30px 40px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            direction: ltr;
+            text-align: left;
+        }
+
+        .page-header h3.page-title {
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        label {
+            font-weight: 500;
+        }
+
+        .ltr-text {
+            direction: ltr;
+            text-align: left;
+        }
+
+        table.table th, table.table td {
+            vertical-align: middle;
+        }
+
+        .btn-primary, .btn-success {
+            border-radius: 12px;
+            padding: 10px 25px;
+            font-weight: 600;
+        }
+
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Montant Total POS style */
+        .montant-total-box {
+            background-color: #f8f9fa;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0d6efd;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+        }
+
+        .montant-value {
+            min-width: 150px;
+            text-align: right;
+            display: inline-block;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        const produits = [];
+        let montantTotal = 0;
+
+        function updateMontantTotal() {
+            montantTotal = produits.reduce((sum, p) => sum + p.Total, 0);
+            document.getElementById('montantTotal').innerText =
+                montantTotal.toLocaleString('fr-FR', { minimumFractionDigits: 2 }) + " DA";
+        }
+
+        function renderTable() {
+            const tbody = document.querySelector('#venteTable tbody');
+            tbody.innerHTML = '';
+            produits.forEach((p, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${p.Nom}</td>
+                    <td>${p.Prix.toFixed(2)}</td>
+                    <td>${p.Quantite}</td>
+                    <td>${(p.Prix * p.Quantite).toLocaleString('fr-FR', { minimumFractionDigits: 2 })}</td>
+                    <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduit(${index})"><i class="bi bi-trash"></i></button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+            updateMontantTotal();
+        }
+
+        function removeProduit(index) {
+            produits.splice(index, 1);
+            renderTable();
+        }
+
+        document.getElementById('addProduitBtn').addEventListener('click', () => {
+            const select = document.getElementById('produitSelect');
+            const quantite = parseInt(document.getElementById('quantiteInput').value);
+            const option = select.selectedOptions[0];
+            if (!option.value) { alert('Sélectionner un produit.'); return; }
+            if (quantite <= 0) { alert('Quantité doit être > 0'); return; }
+
+            const produitNom = option.dataset.nom;
+            const prix = parseFloat(option.dataset.prix);
+            const stock = parseInt(option.dataset.quantite);
+
+            if (quantite > stock) { alert(`Quantité disponible: ${stock}`); return; }
+
+            produits.push({ Id: option.value, Nom: produitNom, Prix: prix, Quantite: quantite, Total: prix*quantite });
+            renderTable();
+        });
+
+        document.getElementById('venteForm').addEventListener('submit', function(e){
+            produits.forEach((p, index) => {
+                const inputNom = document.createElement('input');
+                inputNom.type = 'hidden';
+                inputNom.name = `Produits[${index}].ProduitId`;
+                inputNom.value = p.Id;
+                this.appendChild(inputNom);
+
+                const inputQuant = document.createElement('input');
+                inputQuant.type = 'hidden';
+                inputQuant.name = `Produits[${index}].Quantite`;
+                inputQuant.value = p.Quantite;
+                this.appendChild(inputQuant);
+
+                const inputPrix = document.createElement('input');
+                inputPrix.type = 'hidden';
+                inputPrix.name = `Produits[${index}].PrixUnitaire`;
+                inputPrix.value = p.Prix;
+                this.appendChild(inputPrix);
+
+                const inputNomProd = document.createElement('input');
+                inputNomProd.type = 'hidden';
+                inputNomProd.name = `Produits[${index}].ProduitNom`;
+                inputNomProd.value = p.Nom;
+                this.appendChild(inputNomProd);
+            });
+        });
+    </script>
+}

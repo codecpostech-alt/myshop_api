@@ -1,0 +1,84 @@
+﻿@model MyShop.Models.Chauffeur
+
+@{
+    ViewData["Title"] = "Ajouter Chauffeur";
+}
+
+<div class="container py-4">
+
+    <h2 class="fw-bold mb-4">➕ Ajouter Chauffeur</h2>
+
+    <div class="card shadow border-0 rounded-4">
+        <div class="card-body p-4">
+
+            <form asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+
+                <!-- لعرض جميع الأخطاء -->
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label asp-for="Nom" class="form-label"></label>
+                        <input asp-for="Nom" class="form-control" />
+                        <span asp-validation-for="Nom" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Prenom" class="form-label"></label>
+                        <input asp-for="Prenom" class="form-control" />
+                        <span asp-validation-for="Prenom" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Telephone" class="form-label"></label>
+                        <input asp-for="Telephone" class="form-control" />
+                        <span asp-validation-for="Telephone" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="NumeroPermis" class="form-label"></label>
+                        <input asp-for="NumeroPermis" class="form-control" />
+                        <span asp-validation-for="NumeroPermis" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="ExpirationPermis" class="form-label"></label>
+                        <input asp-for="ExpirationPermis" type="date" class="form-control" />
+                        <span asp-validation-for="ExpirationPermis" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Camion" class="form-label"></label>
+                        <input asp-for="Camion" class="form-control" />
+                        <span asp-validation-for="Camion" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Statut" class="form-label"></label>
+                        <select asp-for="Statut" class="form-select">
+                            <option value="Disponible">Disponible</option>
+                            <option value="EnTournee">En tournée</option>
+                            <option value="Suspendu">Suspendu</option>
+                        </select>
+                        <span asp-validation-for="Statut" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="mt-4 text-end">
+                    <a class="btn btn-secondary me-2" asp-action="Index">Annuler</a>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

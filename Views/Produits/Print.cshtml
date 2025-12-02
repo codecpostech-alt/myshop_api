@@ -1,0 +1,100 @@
+﻿@model MyShop.Models.Produit
+@{
+    ViewBag.Title = "Impression du Barcode";
+    Layout = "_Layout";
+}
+
+<div class="container mt-4">
+    <h2>Impression du Produit</h2>
+
+    <!-- Dropdown pour choisir le rapport -->
+    <div class="dropdown mb-3">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-print"></i> Choisir le rapport
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#!" onclick="printBarcode('Quick Report 1')">Quick Report 1</a></li>
+            <li><a class="dropdown-item" href="#!" onclick="printBarcode('Quick Report 2')">Quick Report 2</a></li>
+        </ul>
+    </div>
+
+    <!-- Nombre de copies -->
+    <div class="mb-3">
+        <label for="copies" class="form-label">Nombre de copies :</label>
+        <input type="number" id="copies" value="1" min="1" max="50" class="form-control w-25" />
+    </div>
+
+    <!-- Hidden div pour impression -->
+    <div id="printContent" style="display:none; width:40mm; height:20mm; text-align:center; padding:2mm;">
+        <strong id="productName"></strong><br />
+        <svg id="barcode"></svg><br />
+        <span id="productPrice"></span>
+    </div>
+</div>
+
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f7f9fc;
+        }
+
+        svg {
+            display: block;
+            margin: 0 auto;
+        }
+
+        #printContent {
+            font-size: 12px;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script>
+        // Remplir les données dynamiquement depuis le model Razor
+        var produit = {
+            Nom: "@Model.Nom",
+            Barcode: "@Model.Barcode",
+            PrixVente: "@Model.PrixVente"
+        };
+
+        function printBarcode(reportType) {
+            const copies = parseInt(document.getElementById("copies").value) || 1;
+
+            // Remplir les données
+            document.getElementById('productName').innerText = produit.Nom;
+            document.getElementById('productPrice').innerText = "Prix: " + produit.PrixVente + " DA";
+
+            JsBarcode("#barcode", produit.Barcode, {
+                format: "CODE128",
+                lineColor: "#000",
+                width: 2,
+                height: 40,
+                displayValue: true
+            });
+
+            // Préparer le contenu pour l'impression
+            var content = document.getElementById('printContent').outerHTML;
+
+            var win = window.open('', '', 'width=400,height=400');
+            win.document.write('<html><head><title>' + reportType + '</title>');
+            win.document.write('<style>media print { body { margin:0; font-family:Arial,sans-serif;} svg { width:40mm; height:20mm; display:block; margin:0 auto; } }</style>');
+            win.document.write('</head><body>');
+
+            for (let i = 0; i < copies; i++) {
+                win.document.write(content);
+                if (i < copies - 1) win.document.write('<hr style="margin:5px 0;">'); // séparation des copies
+            }
+
+            win.document.write('</body></html>');
+            win.document.close();
+            win.focus();
+            win.print();
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+}

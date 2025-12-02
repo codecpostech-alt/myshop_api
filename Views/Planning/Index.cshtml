@@ -1,0 +1,41 @@
+﻿@model IEnumerable<MyShop.Models.Planning>
+@{
+    var chauffeur = ViewBag.Chauffeur;
+}
+
+<h2 class="mb-4">Planning de @chauffeur.Nom @chauffeur.Prenom</h2>
+
+<a class="btn btn-primary mb-3" asp-action="Create" asp-route-chauffeurId="@chauffeur.Id">➕ Nouveau Planning</a>
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Date</th>
+            <th>Camion</th>
+            <th>État</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.DatePlanning.ToString("dd/MM/yyyy")</td>
+                <td>@item.Camion</td>
+                <td>
+                    @if (item.Etat == "Prévue")
+                    {
+                        <span class="badge bg-secondary">Prévue</span>
+                    }
+                    else if (item.Etat == "EnTournee")
+                    {
+                        <span class="badge bg-warning text-dark">En tournée</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Terminée</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

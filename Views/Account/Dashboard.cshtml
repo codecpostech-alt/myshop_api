@@ -1,0 +1,512 @@
+﻿@{
+    ViewData["Title"] = "Tableau de bord - SetShop";
+}
+
+<!-- Bootstrap + Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+<style>
+    body {
+        font-family: 'Poppins', 'Segoe UI', sans-serif;
+        background-color: #f3f4f6;
+        overflow-x: hidden;
+        direction: ltr;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 260px;
+        background: #fff;
+        color: #333;
+        border-right: 1px solid #e5e7eb;
+        padding-top: 20px;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        overflow: hidden;
+    }
+
+    .sidebar.closed {
+        width: 70px;
+    }
+
+    .sidebar:hover {
+        width: 260px;
+    }
+
+    .sidebar .logo {
+        text-align: center;
+        margin-bottom: 40px;
+        transition: 0.3s ease;
+    }
+
+    .sidebar .logo img {
+        width: 120px;
+        transition: 0.3s;
+    }
+
+    .sidebar.closed .logo img {
+        width: 40px;
+    }
+
+    .sidebar a {
+        display: flex;
+        align-items: center;
+        color: #333;
+        text-decoration: none;
+        padding: 12px 20px;
+        margin: 4px 8px;
+        border-radius: 10px;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .sidebar a i {
+        font-size: 1.2rem;
+        margin-right: 10px;
+        min-width: 25px;
+        text-align: center;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+        background-color: #f3f4f6;
+        color: #0d6efd;
+    }
+
+    .sidebar.closed a span {
+        opacity: 0;
+        visibility: hidden;
+        width: 0;
+        transition: all 0.1s ease;
+    }
+
+    .sidebar:hover a span {
+        opacity: 1;
+        visibility: visible;
+        transition-delay: 0.15s;
+    }
+
+    .sidebar-bottom {
+        text-align: center;
+        font-size: 14px;
+        opacity: 0.8;
+        position: absolute;
+        bottom: 20px;
+        width: 100%;
+    }
+
+    /* Sous-menu */
+    .sidebar-item .submenu {
+        display: none;
+        flex-direction: column;
+        margin-left: 20px;
+        padding-left: 10px;
+        border-left: 2px solid #e5e7eb;
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        transition: all 0.4s ease;
+    }
+
+    .sidebar-item.active .submenu {
+        display: flex;
+        max-height: 500px;
+        opacity: 1;
+    }
+
+    .sidebar-item .submenu a {
+        font-size: 0.9rem;
+        padding: 8px 10px;
+        margin: 2px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #333;
+    }
+
+    .sidebar-item .submenu a .badge {
+        flex-shrink: 0;
+        font-size: 0.75rem;
+        padding: 4px 8px;
+        border-radius: 8px;
+    }
+
+    .sidebar-item .arrow {
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar-item.active .arrow {
+        transform: rotate(180deg);
+    }
+
+    /* Main content */
+    .main-content {
+        margin-left: 70px;
+        padding: 25px 35px 80px;
+        transition: margin-left 0.3s ease;
+        flex-grow: 1;
+    }
+
+    .sidebar:hover ~ .main-content {
+        margin-left: 260px;
+    }
+
+    /* Header */
+    .dashboard-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 35px;
+    }
+
+    .dashboard-header h3 {
+        font-weight: 700;
+        color: #1f2937;
+    }
+
+    .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .user-profile img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid #0d6efd;
+    }
+
+    /* Cards */
+    .stats-card {
+        border: none;
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        transition: 0.3s;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stats-icon {
+        font-size: 2rem;
+        padding: 10px;
+        border-radius: 12px;
+        color: #fff;
+        display: inline-block;
+    }
+
+    .bg-primary-gradient {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+
+    .bg-success-gradient {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
+
+    .bg-warning-gradient {
+        background: linear-gradient(135deg, #facc15, #eab308);
+    }
+
+    .bg-info-gradient {
+        background: linear-gradient(135deg, #06b6d4, #0891b2);
+    }
+
+    /* Table */
+    .card {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .table thead {
+        background-color: #f1f5f9;
+    }
+
+    .table td, .table th {
+        vertical-align: middle;
+        text-align: left;
+    }
+
+    /* Footer */
+    .dashboard-footer {
+        background: #fff;
+        border-top: 1px solid #e5e7eb;
+        padding: 20px 30px;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.03);
+        border-radius: 20px 20px 0 0;
+        text-align: center;
+    }
+
+    .dashboard-footer .social-links a {
+        font-size: 1.2rem;
+        transition: color 0.2s ease;
+    }
+
+    .dashboard-footer .social-links a:hover {
+        color: #0d6efd;
+    }
+</style>
+
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="sidebar closed" id="sidebar">
+        <div>
+            <div class="logo">
+                <img src="~/images/logo.png" alt="SetShop Logo" />
+            </div>
+
+            <a href="#" class="active"><i class="bi bi-speedometer2"></i><span> Tableau de bord</span></a>
+
+            <!-- PRODUITS -->
+            <div class="sidebar-item">
+                <a href="#" class="dropdown-toggle">
+                    <i class="bi bi-box-seam"></i><span> Produits</span>
+                    <i class="bi bi-chevron-down ms-auto arrow"></i>
+                </a>
+                <div class="submenu">
+                    <a asp-controller="Produits" asp-action="Index">Tous les produits</a>
+                    <a href="#">Inventaire</a>
+                    <a href="#">Catégories</a>
+                </div>
+            </div>
+
+            <!-- CLIENTS -->
+            <div class="sidebar-item">
+                <a href="#" class="dropdown-toggle mt-2">
+                    <i class="bi bi-people"></i><span> Clients</span>
+                    <i class="bi bi-chevron-down ms-auto arrow"></i>
+                </a>
+                <div class="submenu">
+                    <a asp-controller="Clients" asp-action="Index">Tous les clients</a>
+                    <a asp-controller="Clients" asp-action="Save">Ajouter un client</a>
+                </div>
+            </div>
+
+            <!-- FOURNISSEURS -->
+            <div class="sidebar-item">
+                <a href="#" class="dropdown-toggle mt-2">
+                    <i class="bi bi-person-badge"></i><span> Fournisseurs</span>
+                    <i class="bi bi-chevron-down ms-auto arrow"></i>
+                </a>
+                <div class="submenu">
+                    <a asp-controller="Fournisseurs" asp-action="Index">Tous les fournisseurs</a>
+                    <a asp-controller="Fournisseurs" asp-action="Save">Ajouter un fournisseur</a>
+                </div>
+            </div>
+
+            <!-- COMMANDES -->
+            <div class="sidebar-item">
+                <a href="#" class="dropdown-toggle">
+                    <i class="bi bi-receipt"></i><span> Commandes</span>
+                    <i class="bi bi-chevron-down ms-auto arrow"></i>
+                </a>
+                <div class="submenu">
+                    <a href="#">En attente <span class="badge bg-secondary">0</span></a>
+                    <a href="#">Confirmée <span class="badge bg-success">0</span></a>
+                    <a href="#">En dispatch <span class="badge bg-info">0</span></a>
+                    <a href="#">En livraison <span class="badge bg-primary">0</span></a>
+                    <a href="#">Livrées <span class="badge bg-success-subtle text-success">0</span></a>
+                    <a href="#">En retour <span class="badge bg-warning text-dark">0</span></a>
+                    <a href="#">Annulée <span class="badge bg-danger">0</span></a>
+                    <hr class="my-1" />
+                    <a href="#">Historique</a>
+                </div>
+            </div>
+
+            <!-- Ventes -->
+            <div class="sidebar-item">
+                <a href="#" class="dropdown-toggle mt-2">
+                    <i class="bi bi-cart-check"></i><span> Ventes</span>
+                    <i class="bi bi-chevron-down ms-auto arrow"></i>
+                </a>
+                <div class="submenu">
+                    <a asp-controller="Vente" asp-action="Index">Vente</a>
+                    <a asp-controller="Vente" asp-action="Rapport">Les bons ventes</a>
+                </div>
+            </div>
+            <!-- GESTION PAIEMENTS -->
+            <div class="sidebar-item">
+                <a href="#" class="dropdown-toggle mt-2">
+                    <i class="bi bi-wallet2"></i><span> Gestion Paie</span>
+                    <i class="bi bi-chevron-down ms-auto arrow"></i>
+                </a>
+                <div class="submenu">
+                    <a asp-controller="Employees" asp-action="Index">
+                        <i class="bi bi-person-badge me-2 text-primary"></i> Employés
+                    </a>
+                    <a asp-controller="Employees" asp-action="Save">
+                        <i class="bi bi-person-plus me-2 text-success"></i> Ajouter Employé
+                    </a>
+                    <a asp-controller="PaiementEmployes" asp-action="Create" class="nav-link">
+                        <i class="bi bi-credit-card-2-front me-2 text-warning"></i> Paiement
+                    </a>
+                    <a asp-controller="PaiementEmployes" asp-action="Index">
+                        <i class="bi bi-file-earmark-bar-graph me-2 text-info"></i> Rapport Paiements
+                    </a>
+                </div>
+            </div>
+            <a href="#"><i class="bi bi-check2-circle"></i><span> Confirmation</span></a>
+            <a asp-controller="Livraison" asp-action="Livraison">
+                <i class="bi bi-truck"></i><span> Livraison</span>
+            </a>
+            <a href="#"><i class="bi bi-gear"></i><span> Paramètres</span></a>
+            <a href="#"><i class="bi bi-credit-card"></i><span> Abonnement</span></a>
+        </div>
+
+        <div class="sidebar-bottom">
+            <a href="~/Account/Login" class="text-dark text-decoration-none" id="Connexion">
+                <i class="bi bi-box-arrow-right"></i><span> Déconnexion</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="main-content flex-grow-1">
+        <div class="dashboard-header">
+            <h3>Tableau de bord</h3>
+            @using Microsoft.AspNetCore.Http
+            @inject IHttpContextAccessor HttpContextAccessor
+
+            <div class="user-profile d-flex align-items-center gap-2">
+                <span class="fw-semibold">
+                    @(HttpContextAccessor.HttpContext.Session.GetString("UserName") ?? "Utilisateur")
+                </span>
+                <img src="https://i.pravatar.cc/100" alt="user" class="rounded-circle" style="width:40px; height:40px;">
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row g-4 mb-4 text-center">
+            <div class="col-md-3">
+                <div class="stats-card p-4">
+                    <div class="stats-icon bg-info-gradient mb-2"><i class="bi bi-graph-up-arrow"></i></div>
+                    <h6>Croissance</h6>
+                    <h4 class="fw-bold">+24%</h4>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card p-4">
+                    <div class="stats-icon bg-warning-gradient mb-2"><i class="bi bi-cash-coin"></i></div>
+                    <h6>Revenus</h6>
+                    <h4 class="fw-bold">1.2M DA</h4>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card p-4">
+                    <div class="stats-icon bg-success-gradient mb-2"><i class="bi bi-people"></i></div>
+                    <h6>Clients</h6>
+                    <h4 class="fw-bold">1,024</h4>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card p-4">
+                    <div class="stats-icon bg-primary-gradient mb-2"><i class="bi bi-cart-check"></i></div>
+                    <h6>Commandes</h6>
+                    <h4 class="fw-bold">245</h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="card p-4 mb-4">
+            <h5 class="fw-bold mb-3"><i class="bi bi-receipt-cutoff text-primary me-2"></i>Ventes récentes</h5>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Client</th>
+                            <th>Téléphone</th>
+                            <th>Produit</th>
+                            <th>Entrepôt</th>
+                            <th>Statut</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>01/11/2025</td>
+                            <td>Ahmed B.</td>
+                            <td>+213 657 432 100</td>
+                            <td>Chaussures</td>
+                            <td>Alger</td>
+                            <td><span class="badge bg-success">Livrée</span></td>
+                            <td>3,500 DA</td>
+                            <td><button class="btn btn-sm btn-outline-primary">Détails</button></td>
+                        </tr>
+                        <tr>
+                            <td>31/10/2025</td>
+                            <td>Samira K.</td>
+                            <td>+213 658 221 120</td>
+                            <td>T-shirt</td>
+                            <td>Oran</td>
+                            <td><span class="badge bg-warning text-dark">En cours</span></td>
+                            <td>2,200 DA</td>
+                            <td><button class="btn btn-sm btn-outline-primary">Détails</button></td>
+                        </tr>
+                        <tr>
+                            <td>30/10/2025</td>
+                            <td>Yacine D.</td>
+                            <td>+213 650 555 200</td>
+                            <td>Casquette</td>
+                            <td>Annaba</td>
+                            <td><span class="badge bg-danger">Annulée</span></td>
+                            <td>1,200 DA</td>
+                            <td><button class="btn btn-sm btn-outline-primary">Détails</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
+                <div class="text-muted small">
+                    © 2026 <strong>CODEC POS</strong> — Tous droits réservés.
+                </div>
+                <div class="social-links mt-2 mt-md-0">
+                    <a href="#" class="text-secondary me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-secondary me-3"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-secondary me-3"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" class="text-secondary"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<script>
+    // إدارة القوائم الفرعية عند النقر
+    document.querySelectorAll('.sidebar-item .dropdown-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            const parent = this.parentElement;
+            parent.classList.toggle('active');
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                if (item !== parent) item.classList.remove('active');
+            });
+        });
+    });
+
+    // إغلاق جميع القوائم الفرعية عند خروج الفأرة من الـ sidebar
+    const sidebar = document.getElementById('sidebar');
+    sidebar.addEventListener('mouseleave', function() {
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.classList.remove('active'); // غلق كل القوائم الفرعية
+        });
+    });
+</script>

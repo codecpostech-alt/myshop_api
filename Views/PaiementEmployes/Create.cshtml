@@ -1,0 +1,43 @@
+﻿@model MyShop.Models.PaiementEmploye
+
+@{
+    ViewBag.Title = "Paiement employé";
+    Layout = "_Layout";
+}
+
+<div class="container mt-4" dir="ltr">
+    <h2 class="mb-4">💰 Nouveau paiement employé</h2>
+
+    <form asp-action="Create" method="post" class="text-start">
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="EmployeeId" class="form-label fw-bold"></label>
+            <select asp-for="EmployeeId" class="form-select" asp-items="ViewBag.Employees">
+                <option value="">-- Sélectionner un employé --</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DatePaiement" class="form-label fw-bold"></label>
+            <input asp-for="DatePaiement" class="form-control" type="date" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Montant" class="form-label fw-bold"></label>
+            <input asp-for="Montant" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Remarque" class="form-label fw-bold"></label>
+            <textarea asp-for="Remarque" class="form-control" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success">💾 Enregistrer</button>
+        <a href="@Url.Action("Index", "PaiementEmployes")" class="btn btn-secondary">↩️ Retour</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

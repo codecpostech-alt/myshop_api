@@ -1,0 +1,75 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model MyShop.Models.Chauffeur
+
+@{
+    ViewData["Title"] = "Modifier Chauffeur";
+}
+
+<div class="container py-4">
+
+    <h2 class="fw-bold mb-4">✏️ Modifier Chauffeur</h2>
+
+    <div class="card shadow border-0 rounded-4">
+        <div class="card-body p-4">
+
+            <form asp-action="Edit">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label class="form-label">Nom</label>
+                        <input asp-for="Nom" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Prénom</label>
+                        <input asp-for="Prenom" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Téléphone</label>
+                        <input asp-for="Telephone" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Numéro Permis</label>
+                        <input asp-for="NumeroPermis" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Expiration Permis</label>
+                        <input asp-for="ExpirationPermis" type="date" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Camion</label>
+                        <input asp-for="Camion" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Statut</label>
+                        <select asp-for="Statut" class="form-select">
+                            <option value="Disponible">Disponible</option>
+                            <option value="EnTournee">En tournée</option>
+                            <option value="Suspendu">Suspendu</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="mt-4 text-end">
+                    <a class="btn btn-secondary me-2" asp-action="Index">Retour</a>
+                    <button class="btn btn-primary">Enregistrer</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>

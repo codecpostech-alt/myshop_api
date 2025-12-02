@@ -1,0 +1,190 @@
+﻿@model MyShop.Models.Produit
+
+@{
+    ViewBag.Title = Model.Id == 0 ? "Ajouter un Produit" : "Modifier le Produit";
+    Layout = "_Layout";
+}
+
+<div class="content-wrapper rtl">
+    <!-- رأس الصفحة -->
+    <div class="page-header d-flex justify-content-between align-items-center mb-4">
+        <a href="@Url.Action("Index", "Produits")" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Retour
+        </a>
+
+        <h3 class="page-title">@((Model.Id == 0) ? "AJOUTER UN PRODUIT" : "MODIFIER LE PRODUIT")</h3>
+    </div>
+
+    <form asp-controller="Produits" asp-action="Save" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <div asp-validation-summary="All" class="text-danger mb-4"></div>
+
+        <!-- Nom du produit -->
+        <div class="mb-3">
+            <label for="Nom" class="form-label">NOM PRODUIT</label>
+            <input asp-for="Nom" class="form-control ltr-text" placeholder="Ex : Ordinateur portable" />
+            <span asp-validation-for="Nom" class="text-danger"></span>
+        </div>
+
+        <!-- Catégorie -->
+        <div class="mb-3">
+            <label for="Categorie" class="form-label">CATEGORIE</label>
+            <input asp-for="Categorie" class="form-control ltr-text" placeholder="Ex : Informatique" />
+            <span asp-validation-for="Categorie" class="text-danger"></span>
+        </div>
+
+        <!-- Prix Achat & Prix Vente -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="PrixAchat" class="form-label">PRIX D'ACHAT (DA)</label>
+                <input asp-for="PrixAchat" type="number" class="form-control ltr-text" />
+                <span asp-validation-for="PrixAchat" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="PrixVente" class="form-label">PRIX DE VENTE (DA)</label>
+                <input asp-for="PrixVente" type="number" class="form-control ltr-text" />
+                <span asp-validation-for="PrixVente" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Quantité -->
+        <div class="mb-3">
+            <label for="Quantite" class="form-label">QUANTITE</label>
+            <input asp-for="Quantite" type="number" class="form-control ltr-text" placeholder="Ex : 50" />
+            <span asp-validation-for="Quantite" class="text-danger"></span>
+        </div>
+
+        <!-- Barcode -->
+        <div class="mb-3 d-flex align-items-center gap-2">
+            <div class="flex-grow-1">
+                <label for="Barcode" class="form-label">BARCODE</label>
+                <input asp-for="Barcode" id="Barcode" class="form-control ltr-text" placeholder="Ex : 1234567890" />
+            </div>
+            <button type="button" id="GenerateBarcode" class="btn btn-info mt-4">
+                <i class="bi bi-upc-scan"></i> GENERATE
+            </button>
+        </div>
+
+        <!-- SVG للباركود -->
+        <div class="mb-3 text-center">
+            <svg id="barcode"></svg>
+        </div>
+
+        <!-- أزرار أسفل منتصف الصفحة -->
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <a href="@Url.Action("Index", "Produits")" class="btn btn-outline-secondary btn-lg">
+                <i class="bi bi-x-circle me-1"></i> Annuler
+            </a>
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="bi bi-save me-1"></i> @(Model.Id == 0 ? "Ajouter" : "Modifier")
+            </button>
+        </div>
+    </form>
+
+    <div class="footer-note mt-5">
+        © @DateTime.Now.Year - <strong>CODEC SHOP</strong> | Gestion des produits
+    </div>
+</div>
+
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            background: linear-gradient(135deg, #f0f4f8, #d9e8fb);
+            font-family: 'Poppins', sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .content-wrapper {
+            max-width: 850px;
+            margin: 50px auto;
+            background: #fff;
+            border-radius: 18px;
+            padding: 40px 50px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+
+        label.form-label {
+            display: block;
+            text-align: left;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .ltr-text {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            padding: 12px 14px;
+            border: 1px solid #ced4da;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+            .form-control:focus {
+                border-color: #007bff;
+                box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+            }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #007bff, #00b4d8);
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 12px 25px;
+        }
+
+        .btn-outline-secondary {
+            border-radius: 12px;
+            padding: 12px 25px;
+            font-weight: 500;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #666;
+            margin-top: 35px;
+            font-weight: 500;
+        }
+    </style>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script>
+        function generateBarcode(value) {
+            JsBarcode("#barcode", value, {
+                format: "CODE128",
+                lineColor: "#000",
+                width: 2,
+                height: 50,
+                displayValue: true
+            });
+        }
+
+        // توليد الباركود عند تحميل الصفحة
+        const barcodeInput = document.getElementById("Barcode");
+        generateBarcode(barcodeInput.value || "@Model.Id");
+
+        // توليد عند تغيير القيمة
+        barcodeInput.addEventListener("input", function() {
+            generateBarcode(this.value);
+        });
+
+        // توليد تلقائي عند الضغط على زر
+        document.getElementById("GenerateBarcode").addEventListener("click", function() {
+            // توليد رقم عشوائي مكون من 12 رقم
+            const randomBarcode = Math.floor(100000000000 + Math.random() * 900000000000);
+            barcodeInput.value = randomBarcode;
+            generateBarcode(randomBarcode);
+        });
+    </script>
+}

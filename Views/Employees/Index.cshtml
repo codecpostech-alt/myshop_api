@@ -1,0 +1,65 @@
+﻿@model IEnumerable<MyShop.Models.Employee>
+
+@{
+    ViewBag.Title = "Liste des employés";
+    Layout = "_Layout";
+}
+
+<div class="container mt-4" dir="ltr">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center gap-2">
+            <a href="javascript:history.back()" class="btn btn-secondary">
+                ← Retour
+            </a>
+            <h2 class="mb-0">👨‍💼 Liste des employés</h2>
+        </div>
+
+        <a href="@Url.Action("Save", "Employees")" class="btn btn-success">
+            ➕ Ajouter un employé
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    <table class="table table-bordered table-striped text-start">
+        <thead class="table-dark">
+            <tr>
+                <th>NOM</th>
+                <th>PRENOM</th>
+                <th>POSTE</th>
+                <th>SALAIRE (DA)</th>
+                <th>MOBILE</th>
+                <th>ACTIONS</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in Model)
+            {
+                <tr>
+                    <td>@emp.Nom</td>
+                    <td>@emp.Prenom</td>
+                    <td>@emp.Poste</td>
+                    <td>@emp.SalaireBase.ToString("N0")</td>
+                    <td>@emp.Telephone</td>
+                    <td>
+                        <a href="@Url.Action("Save", "Employees", new { id = emp.Id })" class="btn btn-primary btn-sm">
+                            ✏️ Modifier
+                        </a>
+                        <a href="@Url.Action("Delete", "Employees", new { id = emp.Id })"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Supprimer cet employé ?');">
+                            🗑️ Supprimer
+                        </a>
+                        <a href="@Url.Action("Create", "PaiementEmployes", new { employeeId = emp.Id })"
+                           class="btn btn-success btn-sm">
+                            💰 Paiement
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

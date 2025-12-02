@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MyShop</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MyShop.styles.css" asp-append-version="true" />
+    @RenderSection("Styles", required: false)
+    <style>
+        footer.main-footer {
+            display: none !important;
+        }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f9fafb;
+            direction: rtl;
+        }
+
+        /* 🌙 Footer Styling */
+        .main-footer {
+            background-color: #111827;
+            color: #f9fafb;
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-col h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .footer-about {
+            color: #d1d5db;
+            line-height: 1.8;
+            margin-top: 10px;
+            font-size: 0.95rem;
+        }
+
+        .contact-info {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+            .contact-info li {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 10px;
+                color: #d1d5db;
+            }
+
+            .contact-info a {
+                color: #9ca3af;
+                text-decoration: none;
+            }
+
+                .contact-info a:hover {
+                    color: #3b82f6;
+                }
+
+        .social-links {
+            margin-top: 15px;
+            display: flex;
+            gap: 15px;
+        }
+
+            .social-links a {
+                color: #f9fafb;
+                font-size: 1.5rem;
+                transition: color 0.3s;
+            }
+
+                .social-links a:hover {
+                    color: #3b82f6;
+                }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            text-align: center;
+            padding-top: 20px;
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+
+        media (max-width: 600px) {
+            .footer-grid
+
+        {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        .contact-info li {
+            justify-content: center;
+        }
+
+        .social-links {
+            justify-content: center;
+        }
+
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                
+                </button>
+   
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- 🌟 Footer -->
+    <footer id="contact" class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- العمود الأول -->
+                <div class="footer-col">
+                    <a href="#" class="logo">
+                        <img src="~/images/logo.ico" alt="SetShop Logo" class="logo-light" style="height:50px;" />
+                    </a>
+                    <p class="footer-about">
+                        المنصة الرائدة لتمكين التجارة الإلكترونية في الجزائر — نقدم حلولاً مبتكرة وسهلة الاستخدام لتطوير متجرك عبر الإنترنت.
+                    </p>
+                    <div class="social-links">
+                        <a target="_blank" href="https://www.facebook.com/profile.php?id=61582756170894" aria-label="Facebook"><i data-feather="facebook"></i></a>
+                        <a target="_blank" href="https://www.tiktok.com/codecpos?_r=1&_t=ZS-911TqQpPMfP" aria-label="Tik Tok"><i data-feather="instagram"></i></a>
+                    </div>
+                </div>
+
+                <!-- العمود الثاني -->
+                <div class="footer-col">
+                    <h3>تواصل معنا</h3>
+                    <ul class="contact-info">
+                        <li><i data-feather="map-pin"></i><span>براقي، الجزائر</span></li>
+                        <li><i data-feather="phone"></i><span>0553456168</span></li>
+                        <li><i data-feather="mail"></i><a href="mailto:Codecpostech@gmail.com">Codecpostech@gmail.com</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 جميع الحقوق محفوظة - <strong>CODEC POS</strong></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- سكريبتات -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script> feather.replace(); </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

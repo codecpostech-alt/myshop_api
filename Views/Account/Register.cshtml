@@ -1,0 +1,75 @@
+﻿@{
+    Layout = null;
+}
+@model SetShop.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="d-flex justify-content-center align-items-center" style="height:100vh; background: linear-gradient(to right, #e8f0ff, #ffffff);">
+    <div class="card shadow-lg p-4" style="width: 400px; border-radius: 20px;">
+        <div class="text-center mb-3">
+            <img src="~/images/logo.png" alt="SetShop Logo" width="120" />
+            <h5 class="mt-2 text-secondary">Create an Account</h5>
+            <small>Already have an account? <a href="/Account/Login">CONNEXION</a></small>
+        </div>
+
+        <form asp-action="Register" method="post">
+            <div class="mb-3">
+                <label class="form-label">Full name</label>
+                <input asp-for="FullName" class="form-control" placeholder="Nom et prénom" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Select a country</label>
+                <select asp-for="Country" class="form-select">
+                    <option value="Algeria">Algeria</option>
+                    <option value="Morocco">Morocco</option>
+                    <option value="Tunisia">Tunisia</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Phone Number</label>
+                <div class="input-group">
+                    <span class="input-group-text">+213</span>
+                    <input asp-for="PhoneNumber" class="form-control" placeholder="Enter your number" />
+                </div>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input asp-for="Email" class="form-control" placeholder="Email address" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input asp-for="Password" type="password" class="form-control" placeholder="********" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Confirm password</label>
+                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="********" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Enter the code shown in the image</label>
+                <input asp-for="Captcha" class="form-control" placeholder="Lg59da" />
+                <span asp-validation-for="Captcha" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100" style="border-radius: 10px;">Confirm</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

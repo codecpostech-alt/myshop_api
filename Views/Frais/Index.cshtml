@@ -1,0 +1,133 @@
+﻿@model IEnumerable<MyShop.Models.Frais>
+@{
+    ViewData["Title"] = "Gestion des Frais";
+}
+
+<div class="container mt-5">
+    <div class="card shadow border-0 rounded-4">
+        <div class="card-header bg-gradient bg-primary text-white d-flex justify-content-between align-items-center">
+            <!-- 🔹 العنوان في اليسار -->
+            <h4 class="mb-0 text-start">
+                <i class="bi bi-wallet2"></i> Gestion des Frais
+            </h4>
+
+            <!-- 🔹 الزر في اليمين -->
+            <button class="btn btn-light btn-sm fw-semibold" data-bs-toggle="modal" data-bs-target="#addFraisModal">
+                <i class="bi bi-plus-circle"></i> Ajouter un Frais
+            </button>
+        </div>
+
+        <div class="card-body p-4">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <!-- 🔹 اتجاه من اليسار إلى اليمين -->
+                    <table class="table table-hover table-bordered align-middle text-center" dir="ltr">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Type</th>
+                                <th>Montant (DA)</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <th>Utilisateur</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderByDescending(f => f.DateFrais))
+                            {
+                                <tr>
+                                    <td><span class="badge bg-info text-dark px-3 py-2">@item.Type</span></td>
+                                    <td class="fw-bold text-success">@item.Montant.ToString("N2")</td>
+                                    <td>
+                                        @if (string.IsNullOrWhiteSpace(item.Description))
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                        else
+                                        {
+                                            @item.Description
+                                        }
+                                    </td>
+                                    <td>@item.DateFrais.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>
+                                        <div class="d-flex align-items-center justify-content-center gap-2">
+                                            <img src="https://i.pravatar.cc/40?u=@item.Utilisateur"
+                                                 class="rounded-circle border" width="35" height="35" />
+                                            <span class="fw-semibold">@item.Utilisateur</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger"
+                                           onclick="return confirm('Supprimer ce frais ?');">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center text-muted py-5">
+                    <i class="bi bi-emoji-frown fs-1"></i>
+                    <p class="mt-3">Aucun frais enregistré pour le moment.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- 🔹 Modal Ajouter un Frais -->
+<div class="modal fade" id="addFraisModal" tabindex="-1" aria-labelledby="addFraisModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow-lg">
+            <div class="modal-header bg-gradient bg-primary text-white rounded-top-4">
+                <h5 class="modal-title" id="addFraisModalLabel">
+                    <i class="bi bi-plus-circle"></i> Ajouter un nouveau Frais
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form asp-action="Create" method="post">
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Type de Frais</label>
+                        <select class="form-select shadow-sm" name="Type" required>
+                            <option value="">-- Sélectionner un type --</option>
+                            <option>Loyer</option>
+                            <option>Électricité</option>
+                            <option>Eau</option>
+                            <option>Internet</option>
+                            <option>Transport</option>
+                            <option>Maintenance</option>
+                            <option>Salaire Employé</option>
+                            <option>Autre</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Montant (DA)</label>
+                        <input type="number" class="form-control shadow-sm" name="Montant" step="0.01" min="0"
+                               required placeholder="Ex: 5000" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Description</label>
+                        <textarea class="form-control shadow-sm" name="Description" rows="2"
+                                  placeholder="Ex: Paiement facture électricité..."></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

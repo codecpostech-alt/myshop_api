@@ -1,0 +1,30 @@
+﻿@model MyShop.Models.Chauffeur
+
+@{
+    ViewData["Title"] = "Détails Chauffeur";
+}
+
+<div class="container py-4">
+
+    <h2 class="fw-bold mb-4">👁️ Détails Chauffeur</h2>
+
+    <div class="card shadow border-0 rounded-4">
+        <div class="card-body p-4">
+
+            <p><strong>Nom :</strong> @Model.Nom</p>
+            <p><strong>Prénom :</strong> @Model.Prenom</p>
+            <p><strong>Téléphone :</strong> @Model.Telephone</p>
+            <p><strong>Numéro Permis :</strong> @Model.NumeroPermis</p>
+            <p><strong>Expiration :</strong> @(Model.ExpirationPermis?.ToString("dd/MM/yyyy") ?? "—")</p>
+            <p><strong>Camion :</strong> @Model.Camion</p>
+            <p><strong>Statut :</strong> @Model.Statut</p>
+
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-secondary">Retour</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary ms-2">Modifier</a>
+    </div>
+
+</div>

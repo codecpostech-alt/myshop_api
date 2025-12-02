@@ -1,0 +1,38 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model MyShop.Models.Chauffeur
+
+@{
+    ViewData["Title"] = "Supprimer Chauffeur";
+}
+
+<div class="container py-4">
+    <h2 class="fw-bold text-danger mb-4">🗑️ Supprimer Chauffeur</h2>
+
+    <div class="alert alert-danger rounded-4">
+        <h5>Êtes-vous sûr de vouloir supprimer ce chauffeur ?</h5>
+    </div>
+
+    <div class="card shadow border-0 rounded-4 mb-4">
+        <div class="card-body">
+
+            <p><strong>Nom :</strong> @Model.Nom</p>
+            <p><strong>Prénom :</strong> @Model.Prenom</p>
+            <p><strong>Téléphone :</strong> @Model.Telephone</p>
+            <p><strong>Permis :</strong> @Model.NumeroPermis</p>
+
+        </div>
+    </div>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="text-end">
+            <a asp-action="Index" class="btn btn-secondary me-2">Annuler</a>
+            <button class="btn btn-danger">Supprimer</button>
+        </div>
+    </form>
+</div>

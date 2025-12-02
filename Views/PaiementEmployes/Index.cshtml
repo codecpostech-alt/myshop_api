@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Liste des paiements employés";
+    Layout = "_Layout";
+}
+
+<div class="container mt-4" dir="ltr">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center gap-2">
+            <a href="@Url.Action("Dashboard", "Account")" class="btn btn-secondary">
+                ← Retour
+            </a>
+            <h2 class="mb-0">💰 Liste des paiements</h2>
+        </div>
+
+        <a href="@Url.Action("Create", "PaiementEmployes")" class="btn btn-success">
+            ➕ Nouveau paiement
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Employé</th>
+                <th>Date</th>
+                <th>Montant (DA)</th>
+                <th>Remarque</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in ViewBag.Paiements)
+            {
+                <tr>
+                    <td>@p.Employe</td>
+                    <td>@p.DatePaiement.ToShortDateString()</td>
+                    <td>@p.Montant.ToString("N0")</td>
+                    <td>@p.Remarque</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

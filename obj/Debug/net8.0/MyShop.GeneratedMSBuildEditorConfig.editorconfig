@@ -1,0 +1,165 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = MyShop
+build_property.RootNamespace = MyShop
+build_property.ProjectDir = C:\Users\CODEC POS\source\repos\MyShop\MyShop\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\CODEC POS\source\repos\MyShop\MyShop
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Account/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxEYXNoYm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Account/ForgotPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxGb3Jnb3RQYXNzd29yZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Chauffeurs/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhdWZmZXVyc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Chauffeurs/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhdWZmZXVyc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Chauffeurs/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhdWZmZXVyc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Chauffeurs/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhdWZmZXVyc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Chauffeurs/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhdWZmZXVyc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Clients/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50c1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Clients/Save.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50c1xTYXZlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Employees/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Employees/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Fournisseurs/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRm91cm5pc3NldXJzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Fournisseurs/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRm91cm5pc3NldXJzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Frais/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRnJhaXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Frais/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRnJhaXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Livraison/Livraison.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGl2cmFpc29uXExpdnJhaXNvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/PaiementEmployes/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFpZW1lbnRFbXBsb3llc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/PaiementEmployes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFpZW1lbnRFbXBsb3llc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Planning/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbm5pbmdcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Planning/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbm5pbmdcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Produits/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVpdHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Produits/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVpdHNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Produits/Print.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVpdHNcUHJpbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Settings/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2V0dGluZ3NcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Vente/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVudGVcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Vente/RapportVentes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVudGVcUmFwcG9ydFZlbnRlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/CODEC POS/source/repos/MyShop/MyShop/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-yeuxn7t2ft
