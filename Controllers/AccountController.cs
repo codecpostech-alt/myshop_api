@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MyShop.Data;
 using MyShop.Models;
 using SetShop.Models;
@@ -81,6 +81,8 @@ namespace SetShop.Controllers
         [HttpPost]
         public IActionResult Login(LoginViewModel model, string returnUrl = null)
         {
+            ModelState.Remove("returnUrl");
+
             if (!ModelState.IsValid)
                 return View(model);
 
@@ -90,13 +92,13 @@ namespace SetShop.Controllers
             if (user != null)
             {
                 HttpContext.Session.SetString("UserName", user.FullName);
-
                 HttpContext.Session.SetString("UserEmail", user.Email);
 
-                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                    return Redirect(returnUrl);
+                // 🔥 الحل هنا
+                if (string.IsNullOrEmpty(returnUrl))
+                    returnUrl = Url.Action("Dashboard", "Account");
 
-                return RedirectToAction("Dashboard");
+                return Redirect(returnUrl);
             }
 
             ModelState.AddModelError("", "L'adresse e-mail ou le mot de passe est incorrect ❌");
