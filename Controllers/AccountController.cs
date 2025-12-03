@@ -10,7 +10,7 @@ using System.Net.Mail;
 namespace SetShop.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/Account")]
     public class AccountController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -82,10 +82,13 @@ namespace SetShop.Controllers
         }
 
 
-        // ============================
-        // 🔵 WEB MVC REGISTER
-        // ============================
+
+        // ===========================================================
+        // 🔵 MVC ROUTES (FIXED) — مهم جداً حتى لا يخرب API في Render
+        // ===========================================================
+
         [HttpGet]
+        [Route("[action]")]
         public IActionResult Register(string plan = null, string returnUrl = null)
         {
             ViewBag.Plan = plan;
@@ -94,6 +97,7 @@ namespace SetShop.Controllers
         }
 
         [HttpPost]
+        [Route("[action]")]
         public IActionResult Register(RegisterViewModel model, string returnUrl = null)
         {
             if (ModelState.IsValid)
@@ -117,7 +121,6 @@ namespace SetShop.Controllers
                 _context.SaveChanges();
 
                 HttpContext.Session.SetString("UserName", user.FullName);
-
                 SendWelcomeEmail(user);
 
                 if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
@@ -129,10 +132,14 @@ namespace SetShop.Controllers
             return View(model);
         }
 
+
+
         // ============================
-        // 🔵 WEB MVC LOGIN
+        // 🔵 MVC LOGIN (SAFE ROUTE)
         // ============================
+
         [HttpGet]
+        [Route("[action]")]
         public IActionResult Login(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -140,6 +147,7 @@ namespace SetShop.Controllers
         }
 
         [HttpPost]
+        [Route("[action]")]
         public IActionResult Login(LoginViewModel model, string returnUrl = null)
         {
             ModelState.Remove("returnUrl");
@@ -165,38 +173,14 @@ namespace SetShop.Controllers
             return View(model);
         }
 
+
+
         // ============================
-        // 🔵 FORGOT PASSWORD
+        // 🔵 DASHBOARD (MVC)
         // ============================
+
         [HttpGet]
-        public IActionResult ForgotPassword() => View();
-
-        [HttpPost]
-        public IActionResult ForgotPassword(string email)
-        {
-            var user = _context.Users.FirstOrDefault(u => u.Email == email);
-            if (user == null)
-            {
-                TempData["Message"] = "❌ لم يتم العثور على مستخدم بهذا البريد الإلكتروني.";
-                return View();
-            }
-
-            try
-            {
-                SendForgotPasswordEmail(user);
-                TempData["Message"] = "✅ تم إرسال كلمة المرور إلى بريدك الإلكتروني.";
-            }
-            catch (Exception ex)
-            {
-                TempData["Message"] = "⚠️ خطأ أثناء الإرسال: " + ex.Message;
-            }
-
-            return View();
-        }
-
-        // ============================
-        // 🔵 DASHBOARD
-        // ============================
+        [Route("[action]")]
         public IActionResult Dashboard()
         {
             var userName = HttpContext.Session.GetString("UserName");
@@ -207,18 +191,12 @@ namespace SetShop.Controllers
             return View();
         }
 
-        // ============================
-        // 🔵 SUCCESS PAGE
-        // ============================
-        public IActionResult Success()
-        {
-            ViewBag.Message = TempData["Message"];
-            return View();
-        }
+
 
         // ============================
         // 🔵 EMAIL FUNCTIONS
         // ============================
+
         private void SendWelcomeEmail(User user)
         {
             try
@@ -226,9 +204,6 @@ namespace SetShop.Controllers
                 var fromAddress = new MailAddress("codecpostech@gmail.com", "CODEC POS");
                 var toAddress = new MailAddress(user.Email, user.FullName);
                 const string fromPassword = "kcju vexy lrpv gwjl";
-
-                string subject = "🎉 Bienvenue / مرحباً بك في CODEC POS";
-                string body = $"<h2>Bienvenue {user.FullName}</h2><p>مرحباً بك في CODEC POS</p>";
 
                 var smtp = new SmtpClient
                 {
@@ -240,8 +215,8 @@ namespace SetShop.Controllers
 
                 using (var message = new MailMessage(fromAddress, toAddress)
                 {
-                    Subject = subject,
-                    Body = body,
+                    Subject = "Bienvenue / مرحباً بك",
+                    Body = $"<h2>Bienvenue {user.FullName}</h2>",
                     IsBodyHtml = true
                 })
                 {
@@ -249,34 +224,6 @@ namespace SetShop.Controllers
                 }
             }
             catch { }
-        }
-
-        private void SendForgotPasswordEmail(User user)
-        {
-            var fromAddress = new MailAddress("codecpostech@gmail.com", "CODEC POS");
-            var toAddress = new MailAddress(user.Email, user.FullName);
-            const string fromPassword = "kcju vexy lrpv gwjl";
-
-            string subject = "🔑 Réinitialisation du mot de passe";
-            string body = $"<p>Email: {user.Email}<br>Mot de passe: {user.Password}</p>";
-
-            var smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-            };
-
-            using (var message = new MailMessage(fromAddress, toAddress)
-            {
-                Subject = subject,
-                Body = body,
-                IsBodyHtml = true
-            })
-            {
-                smtp.Send(message);
-            }
         }
     }
 }
