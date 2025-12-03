@@ -9,6 +9,7 @@ using System.Net.Mail;
 
 namespace SetShop.Controllers
 {
+    [ApiController]   // 🔥 مهم جداً للـ API
     [Route("[controller]")]
     public class AccountController : Controller
     {
@@ -22,8 +23,7 @@ namespace SetShop.Controllers
         // ============================
         // 🔥🔥 API LOGIN FOR FLUTTER
         // ============================
-        [HttpPost]
-        [Route("api/login")]
+        [HttpPost("api/login")]
         public IActionResult ApiLogin([FromBody] LoginViewModel model)
         {
             if (model == null || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
@@ -31,7 +31,8 @@ namespace SetShop.Controllers
                 return BadRequest(new { error = "Email and password are required" });
             }
 
-            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
+            var user = _context.Users
+                .FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
 
             if (user == null)
             {
@@ -51,19 +52,14 @@ namespace SetShop.Controllers
         // ============================
         // 🔥🔥 API REGISTER FOR FLUTTER
         // ============================
-        [HttpPost]
-        [Route("api/register")]
+        [HttpPost("api/register")]
         public IActionResult ApiRegister([FromBody] RegisterViewModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(new { error = "Invalid data" });
-            }
 
             if (_context.Users.Any(u => u.Email == model.Email))
-            {
                 return BadRequest(new { error = "Email already exists" });
-            }
 
             var user = new User
             {
@@ -211,7 +207,7 @@ namespace SetShop.Controllers
         }
 
         // ============================
-        // 🔵 PAGE SUCCESS
+        // 🔵 SUCCESS PAGE
         // ============================
         public IActionResult Success()
         {
@@ -220,7 +216,7 @@ namespace SetShop.Controllers
         }
 
         // ============================
-        // 🔵 EMAIL SENDER (same as before)
+        // 🔵 EMAIL FUNCTIONS
         // ============================
         private void SendWelcomeEmail(User user)
         {
