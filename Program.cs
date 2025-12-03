@@ -18,13 +18,11 @@ builder.Services.AddDataProtection()
     .PersistKeysToFileSystem(new DirectoryInfo(keysPath))
     .SetApplicationName("MyShopApp");
 
-
 // =======================================
 // 🗄️ 2. Database PostgreSQL
 // =======================================
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 
 // =======================================
 // 💳 3. Chargily Payment API
@@ -32,12 +30,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddHttpClient<ChargilyPaymentService>();
 builder.Services.AddScoped<ChargilyPaymentService>();
 
-
 // =======================================
 // 📧 4. Email Service
 // =======================================
 builder.Services.AddTransient<EmailService>();
-
 
 // =======================================
 // 🔐 5. Session
@@ -49,26 +45,18 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-
 // =======================================
 // 🌐 6. MVC + Controllers
 // =======================================
 builder.Services.AddControllersWithViews();
 
-
-// =======================================
-// 🚀 Build App
-// =======================================
 var app = builder.Build();
-
 
 // =======================================
 // 🌍 7. Render FREE fix — Kestrel PORT
 // =======================================
 var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
-
 app.Urls.Add($"http://0.0.0.0:{port}");
-
 
 // =======================================
 // 🛡️ 8. Environment
@@ -79,31 +67,26 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-
 // =======================================
 // ⚙️ 9. Middleware
 // =======================================
-app.UseHttpsRedirection();
+
+// ❌ VERY IMPORTANT: Disable HTTPS Redirect in RENDER
+// app.UseHttpsRedirection();
+
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseSession();
 app.UseAuthorization();
 
-// 🔥 VERY IMPORTANT — Enables API routes
+// 🔥 Enables API routes
 app.MapControllers();
 
-
-// =======================================
-// 🌍 10. MVC Default Route
-// =======================================
+// 🌍 Default MVC Page
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
 
-
-// =======================================
 // ▶️ Run App
-// =======================================
 app.Run();
