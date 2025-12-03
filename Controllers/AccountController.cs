@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 
-namespace SetShop.Controllers
+namespace MyShop.Controllers
 {
     [ApiController]
     [Route("api/Account")]
