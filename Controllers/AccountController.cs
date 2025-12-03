@@ -9,7 +9,7 @@ using System.Net.Mail;
 
 namespace SetShop.Controllers
 {
-    [ApiController]   // 🔥 مهم جداً للـ API
+    [ApiController]
     [Route("api/[controller]")]
     public class AccountController : Controller
     {
@@ -20,13 +20,15 @@ namespace SetShop.Controllers
             _context = context;
         }
 
-        // ============================
-        // 🔥🔥 API LOGIN FOR FLUTTER
-        // ============================
-        [HttpPost("api/login")]
+        // ======================================
+        // 🔥 API LOGIN (FLUTTER)
+        // ======================================
+        [HttpPost("login")]
         public IActionResult ApiLogin([FromBody] LoginViewModel model)
         {
-            if (model == null || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
+            if (model == null ||
+                string.IsNullOrEmpty(model.Email) ||
+                string.IsNullOrEmpty(model.Password))
             {
                 return BadRequest(new { error = "Email and password are required" });
             }
@@ -35,9 +37,7 @@ namespace SetShop.Controllers
                 .FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
 
             if (user == null)
-            {
                 return Unauthorized(new { error = "Invalid email or password" });
-            }
 
             return Ok(new
             {
@@ -49,10 +49,10 @@ namespace SetShop.Controllers
             });
         }
 
-        // ============================
-        // 🔥🔥 API REGISTER FOR FLUTTER
-        // ============================
-        [HttpPost("api/register")]
+        // ======================================
+        // 🔥 API REGISTER (FLUTTER)
+        // ======================================
+        [HttpPost("register")]
         public IActionResult ApiRegister([FromBody] RegisterViewModel model)
         {
             if (!ModelState.IsValid)
@@ -80,6 +80,7 @@ namespace SetShop.Controllers
                 email = user.Email
             });
         }
+
 
         // ============================
         // 🔵 WEB MVC REGISTER
