@@ -9,6 +9,7 @@ using System.Net.Mail;
 
 namespace SetShop.Controllers
 {
+    [Route("[controller]")]
     public class AccountController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,9 +19,75 @@ namespace SetShop.Controllers
             _context = context;
         }
 
-        // =======================
-        // 🔹 REGISTER (التسجيل)
-        // =======================
+        // ============================
+        // 🔥🔥 API LOGIN FOR FLUTTER
+        // ============================
+        [HttpPost]
+        [Route("api/login")]
+        public IActionResult ApiLogin([FromBody] LoginViewModel model)
+        {
+            if (model == null || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
+            {
+                return BadRequest(new { error = "Email and password are required" });
+            }
+
+            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
+
+            if (user == null)
+            {
+                return Unauthorized(new { error = "Invalid email or password" });
+            }
+
+            return Ok(new
+            {
+                message = "Login successful",
+                fullName = user.FullName,
+                email = user.Email,
+                phone = user.PhoneNumber,
+                country = user.Country
+            });
+        }
+
+        // ============================
+        // 🔥🔥 API REGISTER FOR FLUTTER
+        // ============================
+        [HttpPost]
+        [Route("api/register")]
+        public IActionResult ApiRegister([FromBody] RegisterViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { error = "Invalid data" });
+            }
+
+            if (_context.Users.Any(u => u.Email == model.Email))
+            {
+                return BadRequest(new { error = "Email already exists" });
+            }
+
+            var user = new User
+            {
+                FullName = model.FullName,
+                Country = model.Country,
+                PhoneNumber = model.PhoneNumber,
+                Email = model.Email,
+                Password = model.Password
+            };
+
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            return Ok(new
+            {
+                message = "Registration successful",
+                fullName = user.FullName,
+                email = user.Email
+            });
+        }
+
+        // ============================
+        // 🔵 WEB MVC REGISTER
+        // ============================
         [HttpGet]
         public IActionResult Register(string plan = null, string returnUrl = null)
         {
@@ -46,19 +113,16 @@ namespace SetShop.Controllers
                     Country = model.Country,
                     PhoneNumber = model.PhoneNumber,
                     Email = model.Email,
-                    Password = model.Password // ⚠️ مستقبلاً استخدم التشفير
+                    Password = model.Password
                 };
 
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
-                // ✅ حفظ اسم المستخدم في Session
                 HttpContext.Session.SetString("UserName", user.FullName);
 
-                // ✅ إرسال رسالة ترحيبية
                 SendWelcomeEmail(user);
 
-                // ✅ إعادة التوجيه بعد التسجيل
                 if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                     return Redirect(returnUrl);
 
@@ -68,9 +132,9 @@ namespace SetShop.Controllers
             return View(model);
         }
 
-        // =======================
-        // 🔹 LOGIN (تسجيل الدخول)
-        // =======================
+        // ============================
+        // 🔵 WEB MVC LOGIN
+        // ============================
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
@@ -94,7 +158,6 @@ namespace SetShop.Controllers
                 HttpContext.Session.SetString("UserName", user.FullName);
                 HttpContext.Session.SetString("UserEmail", user.Email);
 
-                // 🔥 الحل هنا
                 if (string.IsNullOrEmpty(returnUrl))
                     returnUrl = Url.Action("Dashboard", "Account");
 
@@ -105,9 +168,9 @@ namespace SetShop.Controllers
             return View(model);
         }
 
-        // =======================
-        // 🔹 FORGOT PASSWORD
-        // =======================
+        // ============================
+        // 🔵 FORGOT PASSWORD
+        // ============================
         [HttpGet]
         public IActionResult ForgotPassword() => View();
 
@@ -128,17 +191,15 @@ namespace SetShop.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Message"] = "⚠️ حدث خطأ أثناء الإرسال: " + ex.Message;
+                TempData["Message"] = "⚠️ خطأ أثناء الإرسال: " + ex.Message;
             }
 
             return View();
         }
 
-        // =======================
-        // 🔹
-        // 
-
-        // =======================
+        // ============================
+        // 🔵 DASHBOARD
+        // ============================
         public IActionResult Dashboard()
         {
             var userName = HttpContext.Session.GetString("UserName");
@@ -149,18 +210,18 @@ namespace SetShop.Controllers
             return View();
         }
 
-        // =======================
-        // 🔹 Page de succès
-        // =======================
+        // ============================
+        // 🔵 PAGE SUCCESS
+        // ============================
         public IActionResult Success()
         {
             ViewBag.Message = TempData["Message"];
             return View();
         }
 
-        // =======================
-        // 🔹 Methods for Emails
-        // =======================
+        // ============================
+        // 🔵 EMAIL SENDER (same as before)
+        // ============================
         private void SendWelcomeEmail(User user)
         {
             try
@@ -177,8 +238,6 @@ namespace SetShop.Controllers
                     Host = "smtp.gmail.com",
                     Port = 587,
                     EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
                     Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
                 };
 
@@ -192,10 +251,7 @@ namespace SetShop.Controllers
                     smtp.Send(message);
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("⚠️ Erreur lors de l'envoi du mail: " + ex.Message);
-            }
+            catch { }
         }
 
         private void SendForgotPasswordEmail(User user)
@@ -204,16 +260,14 @@ namespace SetShop.Controllers
             var toAddress = new MailAddress(user.Email, user.FullName);
             const string fromPassword = "kcju vexy lrpv gwjl";
 
-            string subject = "🔑 Réinitialisation du mot de passe / استرجاع كلمة المرور";
-            string body = $"<p>Bonjour {user.FullName}</p><p>Email: {user.Email}<br>Mot de passe: {user.Password}</p>";
+            string subject = "🔑 Réinitialisation du mot de passe";
+            string body = $"<p>Email: {user.Email}<br>Mot de passe: {user.Password}</p>";
 
             var smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",
                 Port = 587,
                 EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
             };
 
