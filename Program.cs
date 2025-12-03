@@ -57,13 +57,21 @@ builder.Services.AddControllersWithViews();
 
 
 // =======================================
-// 🚀 Build
+// 🚀 Build App
 // =======================================
 var app = builder.Build();
 
 
 // =======================================
-// 🛡️ 7. Environment
+// 🌍 7. Render FREE fix — Kestrel PORT
+// =======================================
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+
+app.Urls.Add($"http://0.0.0.0:{port}");
+
+
+// =======================================
+// 🛡️ 8. Environment
 // =======================================
 if (!app.Environment.IsDevelopment())
 {
@@ -73,7 +81,7 @@ if (!app.Environment.IsDevelopment())
 
 
 // =======================================
-// ⚙️ 8. Middleware
+// ⚙️ 9. Middleware
 // =======================================
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -83,12 +91,12 @@ app.UseRouting();
 app.UseSession();
 app.UseAuthorization();
 
-// ⚠️⚠️ VERY IMPORTANT — Enables API routes ⚠️⚠️
+// 🔥 VERY IMPORTANT — Enables API routes
 app.MapControllers();
 
 
 // =======================================
-// 🌍 9. MVC Default Route
+// 🌍 10. MVC Default Route
 // =======================================
 app.MapControllerRoute(
     name: "default",
