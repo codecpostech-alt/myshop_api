@@ -49,6 +49,7 @@ builder.Services.AddSession(options =>
 // 🌐 6. MVC + Controllers
 // =======================================
 builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
